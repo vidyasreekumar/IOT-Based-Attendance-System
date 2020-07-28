@@ -1,0 +1,56 @@
+#include<LiquidCrystal.h>
+#include<math.h>
+LiquidCrystal lcd(13,12,7,6,5,4);
+int count=-1,a=-1,x=25;
+int col=0;
+void setup() 
+{
+lcd.begin(0,0);
+Serial.begin(9600);
+pinMode(3,INPUT);
+pinMode(2,INPUT);
+pinMode(11,INPUT);
+lcd.cursor();
+}
+
+void loop() 
+{lcd.print(pow(10,2));
+ if(digitalRead(3)==LOW)
+  {
+    while(digitalRead(3)==LOW);
+    if(count==9)
+     count=-1;
+    if(a==9)
+      a=-1;
+    lcd.setCursor(col,0);
+    if(col==0)
+     {
+      count++;
+      lcd.print(count);
+     }
+     else
+     {
+      a++;
+      lcd.print(a);
+     }
+     lcd.setCursor(col,0);
+   }  
+  if(digitalRead(2)==LOW)
+   { while(digitalRead(2)==LOW);
+   if(col==1)
+    col=0;     
+   else 
+    col++;
+   lcd.setCursor(col,0);   
+   }
+   
+    
+    if(digitalRead(11)==LOW)
+     { while(digitalRead(11)==LOW);
+       if((x/10==count)&&(x%10==a))
+         Serial.println("access granted");
+       else
+         Serial.println("access denied");
+     }
+       
+}
